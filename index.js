@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 const auth = require("./controllers/AuthController")
 
 app.post("/register", auth.register)
+app.post("/login", auth.login)
 
 app.listen(4000, () => {
   console.log("express ready on port 4000")

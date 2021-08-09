@@ -21,23 +21,23 @@ const AuthController = {
   login: async (req, res) => {
     const { email, password } = req.body;
     try {
-      const user = await user.findOne({
+      const data = await user.findOne({
         $or : [
           { email: email },
           { username: email }
         ]
       }).select('+password')
-      if (user) {
-        const passwordVerify = hash.verify(password, user.password)
+      if (data) {
+        const passwordVerify = hash.verify(password, data.password)
         if (passwordVerify) {
-          const accessToken = jwt.sign({ email: user.email, id: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+          const accessToken = jwt.sign({ email: data.email, id: data._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
           const verifyToken = jwt.verify(accessToken, process.env.SECRET_TOKEN)
           return res.json({
             status: true,
             message: {
-              name: user.name,
-              username: user.username,
-              email: user.email
+              name: data.name,
+              username: data.username,
+              email: data.email
             },
             token: {
               bearer: accessToken,
