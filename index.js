@@ -9,18 +9,9 @@ app.use(cors())
 app.use(bodyParser.json())
 db.connect(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => {})
 
-app.get("/", (req, res) => {
-  return res.json({
-    status: true,
-    message: '/'
-  })
-})
+const route = require('./routes')
 
-const auth = require("./controllers/AuthController")
-
-app.post("/register", auth.register)
-app.post("/login", auth.login)
-
+app.use(route)
 app.listen(4000, () => {
   console.log("express ready on port 4000")
 })

@@ -20,6 +20,10 @@ const userSchema = db.Schema({
     required: true,
     select: false
   },
+  carts: {
+    type: Array,
+    default: []
+  },
   created_at: {
     type: Date,
     default: Date()
