@@ -37,6 +37,7 @@ const AuthController = {
               name: data.name,
               username: data.username,
               email: data.email,
+              carts: data.carts,
               token: accessToken
             }
           })
