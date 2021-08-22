@@ -19,29 +19,25 @@ const AuthController = {
     }
   },
   login: async (req, res) => {
-    const { email, password } = req.body;
+    const { usmail, password } = req.body;
     try {
       const data = await user.findOne({
         $or : [
-          { email: email },
-          { username: email }
+          { email: usmail },
+          { username: usmail }
         ]
       }).select('+password')
       if (data) {
         const passwordVerify = hash.verify(password, data.password)
         if (passwordVerify) {
           const accessToken = jwt.sign({ email: data.email, id: data._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-          const verifyToken = jwt.verify(accessToken, process.env.SECRET_TOKEN)
           return res.json({
             status: true,
             message: {
               name: data.name,
               username: data.username,
-              email: data.email
-            },
-            token: {
-              bearer: accessToken,
-              identity: verifyToken
+              email: data.email,
+              token: accessToken
             }
           })
         } else {
