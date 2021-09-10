@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const hash = require('password-hash')
 const user = require('../models/User')
 
@@ -30,22 +29,9 @@ const AuthController = {
       if (data) {
         const passwordVerify = hash.verify(password, data.password)
         if (passwordVerify) {
-          const accessToken = jwt.sign({ email: data.email, id: data._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-          const verifyToken = jwt.verify(accessToken, process.env.SECRET_TOKEN)
           return res.json({
             status: true,
-            message: {
-              user: {
-                name: data.name,
-                username: data.username,
-                email: data.email,
-                carts: data.carts,
-              },
-              token: {
-                bearer: accessToken,
-                identity: verifyToken
-              }
-            }
+            message: data
           })
         } else {
           return res.json({ status: false, message: 'Incorrect password, check your password again' })
@@ -56,13 +42,6 @@ const AuthController = {
     } catch (error) {
       return res.json({ status: false, message: error.message })
     }
-    
-  },
-  checkToken: (req, res) => {
-    const { token } = req.body
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
-      err ? res.json({ status: true }) : res.json({ status: false })
-    })
   }
 }
 
