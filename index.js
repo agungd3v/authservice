@@ -11,4 +11,6 @@ app.use(bodyParser.json())
 const route = require('./routes')
 
 app.use(route)
-app.listen(4001, () => {})
+app.listen(4001, () => {
+  console.log('Ready on port 4001')
+})
